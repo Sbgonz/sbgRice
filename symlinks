@@ -1,0 +1,4 @@
+~/sync/dotfiles/sbgRice/.gtkrc-2.0 -> ~/.config/gtk-2.0/gtkrc-2.0
+~/sync/dotfiles/sbgRice/.xprofile -> ~/.config/x11/xprofile
+~/sync/dotfiles/sbgRice/.zprofile -> ~/.config/shell/profile
+~/sync/dotfiles/sbgRice/.local/share/bg -> ~/sync/images/pc/blackcat.jpg
