@@ -1,0 +1,21 @@
+#!/bin/sh
+
+echo "Title of the new note"
+
+read title
+
+filename=$(echo "${title}" | sed -e 's/ /-/g' | sed -r 's/(^|\b)[a-z]/\U&/g' | tr -d '-')
+noteFileName="$ZETTEL/$(date +%Y%m%d%H%M%S)-$filename.md"
+
+if [ ! -f $noteFileName ]; then
+    echo "---
+tags = [ ]
+created = '$(date +%d-%m-%Y)'
+title = '$title'
+---
+
+" > $noteFileName
+fi
+
+nvim -c "norm j3wi" \
+    -c "startinsert" $noteFileName
