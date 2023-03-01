@@ -1,31 +1,25 @@
-# Luke's lf settings
+# Luke's lf settings (forked)
 
-
-# Note on Image Previews
-# For those wanting image previews, like this system, there are four steps to
-# set it up. These are done automatically for LARBS users, but I will state
-# them here for others doing it manually.
-#
-# 1. ueberzug must be installed.
-# 2. The scope file (~/.config/lf/scope for me), must have a command similar to
-#    mine to generate ueberzug images.
-# 3. A `set cleaner` line as below is a cleaner script.
-# 4. lf should be started through a wrapper script (~/.local/bin/lfub for me)
-#    that creates the environment for ueberzug. This command can be be aliased
-#    in your shellrc (`alias lf="lfub") or if set to a binding, should be
-#    called directly instead of normal lf.
+# Previews are provided by ctpv package (in AUR `ctpv-git`). This doesn't work
+# on tmux (as I tried) only in the terminal emulator. Ueberzug doesn't work on
+# wayland and the only option is the icat utility from the Kitty Terminal
+# Emulator. To invoque LF via a keybinding (in gnome for example) the following
+# command launches LF in a detach kitty terminal `kitty --detach --dump-commands lf`
+# There are dotconfig files for both programs
 
 # Basic vars
 set shellopts '-eu'
 set ifs "\n"
 set scrolloff 10
-set icons
+# set icons
 set period 1
 set hidden on
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
-set cleaner '~/.config/lf/cleaner'
-set previewer '~/.config/lf/scope'
 set autoquit on
+set cleaner ctpvclear
+set previewer ctpv
+&ctpv -s &id
+&ctpvquit &id
 
 # cmds/functions
 cmd open ${{
@@ -44,7 +38,9 @@ cmd open ${{
 		;;
 	audio/*) mpv --audio-display=no $f ;;
 	video/*|application/vnd.rn-realmedia) setsid -f mpv $f -quiet >/dev/null 2>&1 ;;
-	application/pdf|application/vnd.djvu|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
+#	application/pdf|application/vnd.djvu|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
+	application/pdf|application/vnd.djvu) setsid -f zathura $fx >/dev/null 2>&1 ;;
+	application/epub*) setsid -f kitty --detach --dump-commands epy $fx >/dev/null 2>&1 ;;
     application/pgp-encrypted) $EDITOR $fx ;;
     application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.oasis.opendocument.text) setsid -f lowriter $fx >/dev/null 2>&1 ;;
     application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|application/octet-stream|application/vnd.oasis.opendocument.spreadsheet|application/vnd.oasis.opendocument.spreadsheet-template) setsid -f localc $fx >/dev/null 2>&1 ;;
@@ -137,8 +133,9 @@ map Y $printf "%s" "$fx" | xclip -selection clipboard
 
 map gd cd ~/documents
 map gD cd ~/downloads
-map gm cd /mnt/
+map gm cd /run/media
 map gs cd ~/sync
+map gz cd ~/sync/phone/notas/zettel
 
 # Source Bookmarks
 source "~/.config/lf/shortcutrc"

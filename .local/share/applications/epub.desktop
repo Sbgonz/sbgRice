@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=CLI Epub Reader
+Exec=/usr/bin/kitty --detach --dump-commands epy %u
