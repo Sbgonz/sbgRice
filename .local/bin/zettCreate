@@ -9,10 +9,10 @@ noteFileName="$ZETTEL/$(date +%Y%m%d%H%M%S)-$filename.md"
 
 if [ ! -f $noteFileName ]; then
     echo "---
-tags = [ ]
-created = '$(date +%d-%m-%Y)'
-title = '$title'
----
+keywords: [ ]
+date: '$(date +%d-%m-%Y)'
+title: '$title'
+...
 
 " > $noteFileName
 fi

@@ -7,13 +7,13 @@ cd "$ZETTEL/"
 [[ -f tags ]] && rm tags
 pcregrep -r	\
     --include='\.md$' \
-    --exclude='^thisFileTags|cTags$' \
+    --exclude='^thisFileTags|cTags|\.pdf$' \
     --exclude-dir='^excludeThisDir$' \
-    "tags\s*= \[" * | while read line; do
-    file=$(echo "$line" | cut -d: -f1)
-    unparsed_tags=$(echo "$line" | cut -d: -f2)
-    tags=$(echo $unparsed_tags | sed -e "s/tags\s*= \[//g" -e "s/,\|\]//g")
-    for tag in $tags; do
-        echo "$tag	$file	/^$unparsed_tags$/;" >> tags # the spaces must be tabs, spaces doesnt work
+    "keywords\s*: \[" * | while read line; do
+    file=$(echo "$line" | cut -d\[ -f1)
+    unparsed_tags=$(echo "$line" | cut -d\[ -f2)
+    keywords=$(echo $unparsed_tags | sed -e "s/keywords\s*: \[//g" -e "s/,\|\]//g")
+    for key in $keywords; do
+        echo "$key	$file	/^$unparsed_tags$/;" >> tags # the spaces must be tabs, spaces doesnt work
     done
 done

@@ -3,7 +3,7 @@
 #--extras=+q
 #--kinds-markdown=t:tags
 --langmap=markdown:.md
---regex-markdown=/\s*tags\s*=\s*\[([^}]+)\]/\1/g,tags/
+--regex-markdown=/\s*keywords\s*:\s*\[([^}]+)\]/\1/g,tags/
 #--regex-markdown=/\s*tags\s*=\s*\{([^}]+)\}/\1/g,tags/
 # this regex is not working with grep.
 # for grep use this regex `tags\s*=\s*\{([^}]+)\}`
