@@ -1,0 +1,25 @@
+#!/usr/bin/sh
+
+set -e
+
+# cd "/path/to/file"
+
+# Initialize an array to store the text files
+text_files=()
+
+# Read files with fzf and store it into an array
+readarray -t files <<< "$(fzf-tmux -m)"
+
+# Loop through the files and separate text files from non-text files (open the last)
+for file in "${files[@]}"; do
+	mime_type=$(file --mime-type -b "$file")
+
+	if [[ "$mime_type" == text/* ]]; then
+		text_files+=("$file")
+	else
+		xdg-open "$file" >/dev/null 2>&1 &
+	fi
+done
+
+# Open text files in the same terminal in separated buffers
+nvim -c "args ${text_files[@]}"

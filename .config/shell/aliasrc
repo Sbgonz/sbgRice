@@ -20,8 +20,8 @@ alias \
 	mkd="mkdir -pv" \
 	yt="yt-dlp --embed-metadata -i" \
 	yta="yt -x -f bestaudio/best" \
-	ffmpeg="ffmpeg -hide_banner"
-    du="du -h"
+	ffmpeg="ffmpeg -hide_banner" \
+	du="du -h"
 
 # Colorize commands when possible.
 alias \
@@ -29,7 +29,8 @@ alias \
 	grep="grep --color=auto" \
 	diff="diff --color=auto" \
 	ccat="highlight --out-format=ansi" \
-    ip="ip -color=auto"
+	ip="ip -color=auto" \
+	lg="gio list -a 'standard::display-name'" # requires gvfs-google package
 
 # These common commands are just too long! Abbreviate them.
 alias \
@@ -45,9 +46,6 @@ alias \
 	xr="sudo xbps-remove -R" \
 	xq="xbps-query" \
 	z="zathura" \
-	fz='for file in $(fzf-tmux -m | xargs -ro -d "\n"); do xdg-open $file 2>&-; done'
-
-
 
 alias \
 	magit="nvim -c MagitOnly" \

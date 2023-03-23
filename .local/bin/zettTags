@@ -10,8 +10,8 @@ pcregrep -r	\
     --exclude='^thisFileTags|cTags|\.pdf$' \
     --exclude-dir='^excludeThisDir$' \
     "keywords\s*: \[" * | while read line; do
-    file=$(echo "$line" | cut -d\[ -f1)
-    unparsed_tags=$(echo "$line" | cut -d\[ -f2)
+    file=$(echo "$line" | cut -d\[ -f1 | sed -e "s/\s*:keywords:\s*//g")
+    unparsed_tags=$(echo "$line" | cut -d\[ -f2 | sed -e "s/^/keywords: \[/g")
     keywords=$(echo $unparsed_tags | sed -e "s/keywords\s*: \[//g" -e "s/,\|\]//g")
     for key in $keywords; do
         echo "$key	$file	/^$unparsed_tags$/;" >> tags # the spaces must be tabs, spaces doesnt work

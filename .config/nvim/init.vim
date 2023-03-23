@@ -88,12 +88,12 @@ function! HandleFZF(file)
     let filename = fnameescape(a:file)
     let filename_wo_timestamp = fnameescape(fnamemodify(a:file, ":t:s/^[0-9]*-//"))
      " Insert the markdown link to the file in the current buffer
-    let mdlink = "[ ".filename_wo_timestamp." ]( ".filename." )"
+    let mdlink = "[".filename_wo_timestamp."](".filename.")"
     put=mdlink
 endfunction
 command! -nargs=1 HandleFZF :call HandleFZF(<f-args>)
 
-nnoremap <leader>f :call fzf#run({'sink':'HandleFZF'})
+nnoremap <leader>f :call fzf#run({'sink':'HandleFZF', 'dir':'$ZETTEL'})
 
 " airline
     let g:airline#extensions#tabline#enabled = 1
