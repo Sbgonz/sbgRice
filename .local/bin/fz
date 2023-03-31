@@ -21,5 +21,7 @@ for file in "${files[@]}"; do
 	fi
 done
 
-# Open text files in the same terminal in separated buffers
-nvim -c "args ${text_files[@]}"
+# Open text files in the same terminal in separated buffers, if no text files selected doesn't open nvim.
+if [ ${#text_files[@]} -gt 0 ]; then
+	nvim -c "args ${text_files[@]}"
+fi

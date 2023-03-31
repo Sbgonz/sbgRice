@@ -1,0 +1,17 @@
+#!/bin/sh
+
+noteFileName="$ZETTEL/QuickNote.md"
+
+if [ ! -f $noteFileName ]; then
+	echo "# QuickNotes" > $noteFileName
+fi
+
+kitty --detach --dump-commands nvim -c "norm Go" \
+	-c "norm Go---
+keywords: [nocat]
+date: '$(date "+%d-%m-%Y %H:%M")'
+title: ''
+..." \
+	-c "norm G2o" \
+	-c "norm zz" \
+	-c "startinsert" $noteFileName
