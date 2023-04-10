@@ -5,7 +5,7 @@ echo "Title of the new note"
 read title
 
 filename=$(echo "${title}" | sed -e 's/ /-/g' | sed -r 's/(^|\b)[a-z]/\U&/g' | tr -d '-')
-noteFileName="$ZETTEL/$(date +%Y%m%d%H%M%S)-$filename.md"
+noteFileName="$ZETTEL/$(date +%Y%m%dT%H%M%S)-$filename.md"
 
 if [ ! -f $noteFileName ]; then
     echo "---

@@ -5,6 +5,7 @@ set -e
 cd "$ZETTEL/"
 
 [[ -f tags ]] && rm tags
+[[ -f ~/.local/share/dic/zettKeys ]] && rm ~/.local/share/dic/zettKeys
 pcregrep -r	\
     --include='\.md$' \
     --exclude='^thisFileTags|cTags|\.pdf$' \
@@ -15,5 +16,8 @@ pcregrep -r	\
     keywords=$(echo $unparsed_tags | sed -e "s/keywords\s*: \[//g" -e "s/,\|\]//g")
     for key in $keywords; do
         echo "$key	$file	/^$unparsed_tags$/;" >> tags # the spaces must be tabs, spaces doesnt work
+        echo "$key" >> ~/.local/share/dic/zettKeys
     done
 done
+
+sort -u -o ~/.local/share/dic/zettKeys{,}

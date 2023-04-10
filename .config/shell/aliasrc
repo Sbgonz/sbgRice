@@ -46,6 +46,7 @@ alias \
 	xr="sudo xbps-remove -R" \
 	xq="xbps-query" \
 	z="zathura" \
+	fzr="fzf -m | xargs -I {} rm -vI {}"
 
 alias \
 	magit="nvim -c MagitOnly" \

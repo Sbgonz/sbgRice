@@ -9,10 +9,8 @@ endif
 
 call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
 Plug 'tpope/vim-surround' " all about surroundings
-" Plug 'preservim/nerdtree' " file explorer
 Plug 'junegunn/goyo.vim' " distraction-free writing in vim
 Plug 'jreybert/vimagit' " perform git operation in a vim buffer
-" Plug 'vimwiki/vimwiki'
 Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-commentary'
 " Plug 'ap/vim-css-color' " colorize code colors in css files
@@ -42,6 +40,9 @@ set softtabstop=4
 set shiftround
 " set expandtab  " Insert spaces instead of <Tab>s
 set nowrapscan
+set dictionary+=~/.local/share/dic/zettKeys
+set complete+=k
+
 
 " Some basics:
     nnoremap c "_c
@@ -63,37 +64,31 @@ set nowrapscan
     map <leader>o :setlocal spell! spelllang=es_es<CR>
 " Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
     set splitbelow splitright
+" Make :grep use ripgrep
+    set grepprg=rg\ --color=never\ --vimgrep\ --smart-case\ --follow
 
-" Nerd tree
-" Delete this lines when NerdTree plugins is deleted
-"    map <leader>n :NERDTreeToggle<CR>
-"    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif if has('nvim')
-"        let NERDTreeBookmarksFile = stdpath('data') . '/NERDTreeBookmarks'
-"    else
-"        let NERDTreeBookmarksFile = '~/.vim' . '/NERDTreeBookmarks'
-"    endif
-
-" vimling:
-" maybe delete this lines since I dont use vimling anymore
-"    nm <leader><leader>d :call ToggleDeadKeys()<CR>
-"    imap <leader><leader>d <esc>:call ToggleDeadKeys()<CR>a
-"    nm <leader><leader>i :call ToggleIPA()<CR>
-"    imap <leader><leader>i <esc>:call ToggleIPA()<CR>a
-"    nm <leader><leader>q :call ToggleProse()<CR>
-
-" FZF.vim
+" FZF.vim config
 let g:fzf_preview_window = ['hidden,right,50%,<70(up,50%)', 'ctrl-/']
 
-function! HandleFZF(file)
-    let filename = fnameescape(a:file)
-    let filename_wo_timestamp = fnameescape(fnamemodify(a:file, ":t:s/^[0-9]*-//"))
-     " Insert the markdown link to the file in the current buffer
-    let mdlink = "[".filename_wo_timestamp."](".filename.")"
-    put=mdlink
-endfunction
-command! -nargs=1 HandleFZF :call HandleFZF(<f-args>)
+" Zettelkasten nvim tools
+    " FZF function to insert link between notes in the $ZETTEL
+    function! HandleFZF(file)
+        let filename = fnameescape(a:file)
+        let filename_wo_timestamp = fnameescape(fnamemodify(a:file, ":t:s/^[0-9]*-//"))
+    " Insert the markdown link to the file in the current buffer
+        let mdlink = "[".filename_wo_timestamp."](".filename.")"
+        put=mdlink
+    endfunction
+    command! -nargs=1 HandleFZF :call HandleFZF(<f-args>)
+    " Map to call the function
+    nnoremap <leader>f :call fzf#run({'sink':'HandleFZF', 'dir':'$ZETTEL'})
 
-nnoremap <leader>f :call fzf#run({'sink':'HandleFZF', 'dir':'$ZETTEL'})
+    " Search for content in the files of our $ZETTEL
+    command! -nargs=1 Ngrep grep "<args>" --glob "*.md" $ZETTEL
+    nnoremap <leader>nn :Ngrep
+    " Show QuickFix list in vertical mode
+    command! Vlist botright vertical copen | vertical resize 50
+    nnoremap <leader>v :Vlist<CR>
 
 " airline
     let g:airline#extensions#tabline#enabled = 1
@@ -104,15 +99,8 @@ nnoremap <leader>f :call fzf#run({'sink':'HandleFZF', 'dir':'$ZETTEL'})
     map <C-j> <C-w>j
     map <C-k> <C-w>k
     map <C-l> <C-w>l
-    nmap <C-PageUp> :bp<CR>
-    nmap <C-PageDown> :bn<CR>
-
-" Maps Surrounding, optional and only in x230
-    vnoremap <leader>( c()<Esc>P
-    vnoremap <leader>[ c[]<Esc>P
-    vnoremap <leader>{ c{}<Esc>P
-    vnoremap <leader>' c''<Esc>P
-    vnoremap <leader>" c""<Esc>P
+    nmap [b :bp<CR>
+    nmap ]b :bn<CR>
 
 " Replace ex mode with gq
     map Q gq
@@ -140,11 +128,7 @@ nnoremap <leader>f :call fzf#run({'sink':'HandleFZF', 'dir':'$ZETTEL'})
     autocmd VimLeave *.tex !texclear %
 
 " Ensure files are read as what I want:
-" maybe delete this commented lines since I dont use vimwiki anymore
-"    let g:vimwiki_ext2syntax = {'.Rmd': 'markdown', '.rmd': 'markdown','.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
-"    map <leader>v :VimwikiIndex<CR>
-"    let g:vimwiki_list = [{'path': '~/sync/notas/', 'syntax': 'markdown', 'ext': '.md'}]
-    autocmd BufRead,BufNewFile /tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
+    autocmd BufRead,BufNewFile *.md,*.txt set filetype=markdown
     autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set filetype=groff
     autocmd BufRead,BufNewFile *.tex set filetype=tex
 
