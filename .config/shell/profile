@@ -12,7 +12,7 @@ unsetopt PROMPT_SP
 
 # Default programs:
 export EDITOR="nvim"
-export TERMINAL="alacritty"
+export TERMINAL="/usr/bin/alacritty"
 export BROWSER="firefox"
 
 # ~/ Clean-up:
@@ -44,6 +44,7 @@ export ELECTRUMDIR="$XDG_DATA_HOME/electrum"
 # Other program settings:
 export BIB="$HOME/sync/phone/notas/study/biblio.bib"
 export ZETTEL="$HOME/sync/phone/notas/zettel"
+export DOTREPO="$HOME/documents/dotRepo"
 export DICS="/usr/share/stardict/dic/"
 export SUDO_ASKPASS="$HOME/.local/bin/dmenupass"
 export FZF_DEFAULT_OPTS="-m --layout=reverse --height 40%"
